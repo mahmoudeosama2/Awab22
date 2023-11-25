@@ -67,8 +67,9 @@ class _StartAppState extends State<StartApp> {
                       const Color(0xff095263))),
             ),
             textTheme: const TextTheme(
+              
               displayLarge: TextStyle(
-                fontSize: 20,
+                fontSize: 16,
                 color: Colors.white,
                 fontWeight: FontWeight.w600,
               ),
