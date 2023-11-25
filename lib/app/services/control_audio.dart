@@ -1,8 +1,13 @@
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-AudioPlayer _player = AudioPlayer();
+AudioPlayer player = AudioPlayer();
+//AudioElement? audio;
+
 bool status = false;
+bool tempThen = false;
+bool? chngcoloror;
 removebasmal(String word) {
   String result = word.replaceAll("بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ", "");
   result = word.replaceAll("بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ", "");
@@ -13,19 +18,35 @@ removebasmal(String word) {
   }
 }
 
+void onEnded() {
+  print('The sound has ended.');
+}
+  
+
 Future getaudio(url) async {
-  await _player.play(UrlSource(url));
+  await player
+      .play(UrlSource(url))
+      .whenComplete(() => print("whennn completeeeeeeeeeeeeeeeeeee"));
+  await player
+      .play(UrlSource(url))
+      .then((value) => print("then completeeeeeeeeeeeeeeeeeee"));
+}
+
+chngcol() {
+  chngcoloror = false;
 }
 
 void audiodisbose() async {
   if (status == true) {
-    await _player.dispose();
+    await player.dispose();
     status = false;
   }
 }
-
+void disboseForce()async{
+  await player.dispose();
+}
 Future pauseaudio() async {
-  await _player.pause();
+  await player.pause();
 }
 
 removetachkil(var str) {
@@ -49,8 +70,7 @@ setprefsbool(String key, bool value) async {
 
 getprefs(String key) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  if ( prefs.containsKey(key)) {
-     return prefs.getBool(key);
+  if (prefs.containsKey(key)) {
+    return prefs.getBool(key);
   }
-
 }

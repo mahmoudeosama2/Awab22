@@ -66,11 +66,12 @@ dependencies:
   in_app_review: ^2.0.6
   workmanager: ^0.5.1
   flutter_local_notifications: ^15.1.0+1
-  radio_player: ^1.4.2
   flutter_screenutil: ^5.9.0
   device_preview: ^1.1.0
   flutter_background_service: ^5.0.1
-  on_audio_query: ^2.9.0
+  #on_audio_query: ^2.9.0
+  launch_review: ^3.0.1
+  flutter_zoom_drawer: ^3.1.1
   
 
 

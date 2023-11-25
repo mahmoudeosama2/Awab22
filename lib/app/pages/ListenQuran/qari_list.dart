@@ -30,7 +30,7 @@ class _QariListState extends State<QariList> {
     var model = Provider.of<Quran>(context);
     quranreader ??= model.quranreader;
     filter ??= quranreader;
-    double height = MediaQuery.of(context).size.height - 260;
+    double height = MediaQuery.of(context).size.height - 230;
     return SafeArea(
         child: ListView(
       children: [
@@ -73,6 +73,7 @@ class ListTileQuranReader extends StatelessWidget {
             ));
           },
           child: ListTile(
+            
             title: SingleChildScrollView(
               child: Column(
                 children: [
@@ -83,7 +84,7 @@ class ListTileQuranReader extends StatelessWidget {
                           "${readerinformation.arabicName ?? readerinformation.name}",
                           style: const TextStyle(
                             fontFamily: "me_quran",
-                            fontSize: 18,
+                            fontSize: 15,
                             color: Colors.black54,
                             fontWeight: FontWeight.w600,
                           ),
@@ -100,7 +101,7 @@ class ListTileQuranReader extends StatelessWidget {
                           "${readerinformation.name ?? readerinformation.arabicName}",
                           style: const TextStyle(
                             fontFamily: "me_quran",
-                            fontSize: 18,
+                            fontSize: 15,
                             color: Colors.black54,
                             fontWeight: FontWeight.w600,
                           ),
@@ -111,8 +112,7 @@ class ListTileQuranReader extends StatelessWidget {
                 ],
               ),
             ),
-          ),
-        ),
+        ),)
       ),
     );
   }

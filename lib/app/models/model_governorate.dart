@@ -21,12 +21,12 @@ class Governorate {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['governorate_name_ar'] = this.governorateNameAr;
-    data['governorate_name_en'] = this.governorateNameEn;
-    data['lat'] = this.lat;
-    data['long'] = this.long;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['governorate_name_ar'] = governorateNameAr;
+    data['governorate_name_en'] = governorateNameEn;
+    data['lat'] = lat;
+    data['long'] = long;
     return data;
   }
 }

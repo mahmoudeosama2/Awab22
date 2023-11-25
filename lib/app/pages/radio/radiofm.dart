@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quran2/app/services/control_audio.dart';
-import 'package:quran2/app/statemanagment/radioprovider.dart';
+
+import '../../statemanagment/otherProviders.dart';
 
 class RadioFm extends StatefulWidget {
   const RadioFm({super.key});
@@ -16,9 +17,7 @@ class _ViewSurahtate extends State<RadioFm> with TickerProviderStateMixin {
   @override
   void initState() {
     _controller =
-        AnimationController(vsync: this, duration: Duration(seconds: 1));
-    var model = Provider.of<Radioprovider>(context);
-
+        AnimationController(vsync: this, duration: const Duration(seconds: 1));
     // model.radio_play_pause_icon != null
     //     ? _isplay = model.radio_play_pause_icon!
     //     : print("");
@@ -39,6 +38,8 @@ class _ViewSurahtate extends State<RadioFm> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    var model = Provider.of<Other>(context);
+    _isplay = model.isFmOn;
     return Directionality(
         textDirection: TextDirection.ltr,
         child: WillPopScope(
@@ -46,14 +47,14 @@ class _ViewSurahtate extends State<RadioFm> with TickerProviderStateMixin {
             child: Scaffold(
                 backgroundColor: Colors.white,
                 body: Container(
-                    padding: EdgeInsets.only(
+                    padding: const EdgeInsets.only(
                       top: 100,
                       bottom: 30,
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Text(
+                        const Text(
                           "إذاعة القرءان الكريم",
                           style: TextStyle(
                             fontFamily: "Cairo",
@@ -65,7 +66,7 @@ class _ViewSurahtate extends State<RadioFm> with TickerProviderStateMixin {
                         Container(
                           child: Image.asset(
                             "asset/images/radio-tower_9421452.png",
-                            color: Color(0xff095263),
+                            color: const Color(0xff095263),
                           ),
                         ),
                         GestureDetector(
@@ -76,7 +77,7 @@ class _ViewSurahtate extends State<RadioFm> with TickerProviderStateMixin {
                             progress: _controller,
                             size: 80,
                             icon: AnimatedIcons.play_pause,
-                            color: Color(0xff095263),
+                            color: const Color(0xff095263),
                           ),
                         )
                       ],

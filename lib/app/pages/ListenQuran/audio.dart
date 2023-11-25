@@ -6,6 +6,7 @@ import 'package:rxdart/rxdart.dart';
 
 List<AudioSource> audioSourceList = [];
 var playList;
+
 class AudioPlayerScreen extends StatefulWidget {
   final index;
   final audioSourceList;
@@ -55,7 +56,6 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -72,7 +72,7 @@ class _AudioPlayerScreenState extends State<AudioPlayerScreen> {
               Container(
                 height: height,
                 width: width,
-                margin: EdgeInsets.only(bottom: 10),
+                margin: const EdgeInsets.only(bottom: 10),
                 child: Column(
                   children: [
                     Directionality(
@@ -262,6 +262,8 @@ correctindex(int? index) {
     return "00$index";
   } else if (index < 100) {
     return "0$index";
+  } else if (index == 100) {
+    return (index.toString());
   } else if (index > 100) {
     return (index.toString());
   }

@@ -3,12 +3,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter/services.dart ';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:provider/provider.dart';
-import 'package:quran2/test.dart';
-import 'app/pages/ListenQuran/view_audio.dart';
-import 'app/pages/radio/radio_player_layout.dart';
+import 'package:quran2/app/statemanagment/otherProviders.dart';
 import 'app/pages/quran/home_page.dart';
 import 'app/pages/navigationbar.dart';
-import 'app/start/splashscreen.dart';
+import 'app/statemanagment/radioprovider.dart';
+import 'start/splashscreen.dart';
 import 'app/statemanagment/athanTimeProvider.dart';
 import 'app/statemanagment/praiseProvider.dart';
 import 'app/statemanagment/quranProvider.dart';
@@ -24,13 +23,15 @@ Future<void> main() async {
       androidNotificationOngoing: true);
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Color(0xff095263),
-      systemNavigationBarColor: Color(0xff095263)));
+      systemNavigationBarColor: Colors.transparent));
 
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (context) => Praise()),
       ChangeNotifierProvider(create: (context) => Quran()),
-      ChangeNotifierProvider(create: (context) => AthanTime())
+      ChangeNotifierProvider(create: (context) => AthanTime()),
+      ChangeNotifierProvider(create: (context) => Radioprovider()),
+      ChangeNotifierProvider(create: (context) => Other())
     ],
     child: const StartApp(),
   ));
@@ -46,6 +47,8 @@ class StartApp extends StatefulWidget {
 class _StartAppState extends State<StartApp> {
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+        overlays: [SystemUiOverlay.top]);
     return OrientationBuilder(
         builder: (BuildContext context, Orientation orientation) {
       return MaterialApp(
@@ -55,9 +58,6 @@ class _StartAppState extends State<StartApp> {
             'splashscreen': ((context) => const splashscreen()),
             'NavigatorBar': ((context) => const NavigatorBar()),
             'HomePage': ((context) => const HomePage()),
-            'ViewAudio': ((context) => const ViewAudio()),
-            'radio': ((context) => const RadioPlayerLayout()),
-            'test': ((context) => MyApp()),
           },
           theme: ThemeData(
             primaryColor: const Color(0xff095263),

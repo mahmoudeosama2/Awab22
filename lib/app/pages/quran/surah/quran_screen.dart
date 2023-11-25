@@ -38,31 +38,34 @@ class _QuranScreenState extends State<QuranScreen> {
     surah ??= model.surahs;
     filter ??= surah;
 
-    double height = MediaQuery.of(context).size.height - 310;
+    double height = MediaQuery.of(context).size.height - 309;
     return Scaffold(
-        body: Container(
-      child: Column(
+      backgroundColor: Colors.white,
+      body: Column(
         children: [
           Container(
+            height: 50,
             margin:
                 const EdgeInsets.only(top: 7, bottom: 7, left: 10, right: 10),
-            child: SizedBox(
-                height: 50,
-                child: CustomTextField(
-                  onchange: (value) => updatelist(value),
-                )),
+            child: CustomTextField(
+              onchange: (value) => updatelist(value),
+            ),
           ),
           SizedBox(
               height: height,
-              child: ListView.builder(
-                itemCount: filter!.length,
-                itemBuilder: (context, i) {
-                  return List_of_surah(quran: filter![i]);
-                },
-              ))
+              child: MediaQuery.removePadding(
+                context: context,
+                removeTop: true,
+                child: ListView.builder(
+                  itemCount: filter!.length,
+                  itemBuilder: (context, i) {
+                    return List_of_surah(quran: filter![i]);
+                  },
+                ),
+              )),
         ],
       ),
-    ));
+    );
   }
 }
 
@@ -114,3 +117,45 @@ class List_of_surah extends StatelessWidget {
     );
   }
 }
+
+
+
+
+// SingleChildScrollView(
+//               child: Column(
+//                 children: [
+//                   Row(
+//                     children: [
+//                       Expanded(
+//                         child: Text(
+//                           "${readerinformation.arabicName ?? readerinformation.name}",
+//                           style: const TextStyle(
+//                             fontFamily: "me_quran",
+//                             fontSize: 18,
+//                             color: Colors.black54,
+//                             fontWeight: FontWeight.w600,
+//                           ),
+//                           textAlign: TextAlign.end,
+//                         ),
+//                       ),
+//                     ],
+//                   ),
+//                   Row(
+//                     mainAxisAlignment: MainAxisAlignment.start,
+//                     children: [
+//                       Expanded(
+//                         child: Text(
+//                           "${readerinformation.name ?? readerinformation.arabicName}",
+//                           style: const TextStyle(
+//                             fontFamily: "me_quran",
+//                             fontSize: 18,
+//                             color: Colors.black54,
+//                             fontWeight: FontWeight.w600,
+//                           ),
+//                         ),
+//                       ),
+//                     ],
+//                   ),
+//                 ],
+//               ),
+//             )

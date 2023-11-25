@@ -1,5 +1,6 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
+int? countopen;
 String alreadyexis = "Erorr : This Praise Already Existing";
 void addPraisesName(String zekr) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -84,3 +85,5 @@ Future<List<List<String>>> showallpraises() async {
 
   return allpraises;
 }
+
+

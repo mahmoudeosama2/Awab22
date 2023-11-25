@@ -21,7 +21,7 @@ class AthanTime with ChangeNotifier {
   String? msgError = "";
   List<Governorate> governorate = [];
   final GeolocatorPlatform _geolocatorPlatform = GeolocatorPlatform.instance;
-  String? city = null;
+  String? city;
   List<double>? coordinates = [];
 
   Future<bool> handlePermission(bool check) async {
@@ -126,12 +126,12 @@ class AthanTime with ChangeNotifier {
   }
 
   getlatlongbycity(String name) {
-    governorate.forEach((element) {
+    for (var element in governorate) {
       if (element.governorateNameAr == name) {
         coordinates = [];
         coordinates?.add(element.lat!);
         coordinates?.add(element.long!);
       }
-    });
+    }
   }
 }

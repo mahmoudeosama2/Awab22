@@ -97,6 +97,8 @@ class List_of_surah extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var model = Provider.of<Quran>(context);
+    print(index);
+    print(quran.name);
 
     return Card(
       child: InkWell(

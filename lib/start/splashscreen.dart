@@ -5,13 +5,14 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
 import 'package:quran2/app/statemanagment/radioprovider.dart';
 import 'package:workmanager/workmanager.dart';
-import '../customewidget/bottombar.dart';
-import '../customewidget/topbar.dart';
-import '../notification/Local_notification.dart';
-import '../pages/navigationbar.dart';
-import '../statemanagment/athanTimeProvider.dart';
-import '../statemanagment/praiseProvider.dart';
-import '../statemanagment/quranProvider.dart';
+import '../app/customewidget/bottombar.dart';
+import '../app/customewidget/topbar.dart';
+import '../app/notification/Local_notification.dart';
+import '../app/pages/navigationbar.dart';
+import '../app/statemanagment/athanTimeProvider.dart';
+import '../app/statemanagment/otherProviders.dart';
+import '../app/statemanagment/praiseProvider.dart';
+import '../app/statemanagment/quranProvider.dart';
 
 List<Color> colors = [const Color(0xff095263)];
 
@@ -19,8 +20,8 @@ FlutterLocalNotificationsPlugin? flutterLocalNotificationsPlugin;
 
 Future showNotification() async {
   int randomIndex = Random().nextInt(smallDo3a2.length - 1);
-  var bigTextStyleInformation = BigTextStyleInformation(
-      '${smallDo3a2[randomIndex]}'); //multi-line show style
+  var bigTextStyleInformation =
+      BigTextStyleInformation(smallDo3a2[randomIndex]); //multi-line show style
 
   AndroidNotificationDetails androidPlatformChannelSpecifics =
       AndroidNotificationDetails('$randomIndex', 'Awab',
@@ -42,9 +43,10 @@ Future showNotification() async {
   );
 }
 
+@pragma('vm:entry-point')
 void callbackDispatcher() {
   var initializationSettingsAndroid =
-      AndroidInitializationSettings('@mipmap/ic_launcher');
+      const AndroidInitializationSettings('@mipmap/ic_launcher');
   var initializationSettings =
       InitializationSettings(android: initializationSettingsAndroid);
   flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
@@ -52,7 +54,7 @@ void callbackDispatcher() {
   flutterLocalNotificationsPlugin!.initialize(
     initializationSettings,
   );
-  Workmanager().executeTask((task, inputData) {
+  Workmanager().executeTask((task, inputData) async{
     showNotification();
     return Future.value(true);
   });
@@ -69,29 +71,34 @@ class _splashscreenState extends State<splashscreen> {
   @override
   void initState() {
     Future.delayed(
-       Duration(seconds: 3),
+      const Duration(seconds: 3),
       () {
         var praisemodel = Provider.of<Praise>(context, listen: false);
         var quranmodel = Provider.of<Quran>(context, listen: false);
         var athan = Provider.of<AthanTime>(context, listen: false);
-        var radio =Provider.of<Radioprovider>(context, listen: false);
+        var radio = Provider.of<Radioprovider>(context, listen: false);
+        var other = Provider.of<Other>(context, listen: false);
         praisemodel.showallpraises();
         quranmodel.ReadJsonCompleteQuran();
         quranmodel.ReadJsonQuranReader();
         athan.ReadJsonGovernorateEgy();
         athan.lastprayertimes();
-        radio.play_pause_choose();
+        //  radio.play_pause_choose();
+        other.maxopenToRate();
+        other.FirstUse();
+
+        other.ifcontainsKey("dontRateAgring") == true
+            ? other.isshowingrate = true
+            : other.isshowingrate = false;
         Workmanager().initialize(callbackDispatcher);
         Workmanager().registerPeriodicTask(
           "1",
           "",
-          frequency: Duration(minutes: 15),
+          frequency: const Duration(minutes: 15),
         );
-
-        //super.initState();
       },
     ).then((value) => Navigator.of(context).pushReplacement(
-        CupertinoPageRoute(builder: (ctx) => const NavigatorBar())));
+        CupertinoPageRoute(builder: (ctx) =>  ZoomDrawerBeforeNavigatBar())));
 
     super.initState();
   }
@@ -121,7 +128,7 @@ class _splashscreenState extends State<splashscreen> {
                     SizedBox(
                         width: width,
                         child: const Image(
-                            image: AssetImage("asset/images/Mosque.png"))),
+                            image: AssetImage("asset/images/Mosque.png")))
                   ],
                 ),
               ),
