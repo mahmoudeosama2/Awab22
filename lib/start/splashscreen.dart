@@ -83,7 +83,7 @@ class _splashscreenState extends State<splashscreen> {
         var athan = Provider.of<AthanTime>(context, listen: false);
         var radio = Provider.of<Radioprovider>(context, listen: false);
         var other = Provider.of<Other>(context, listen: false);
-        await setBoolPrefs("notificationSwitch", false);
+        await setBoolPrefs("notificationSwitch", true);
 
         await other.getBoolNotificationSwtch();
         otherswithch = await other.isswitch!;
