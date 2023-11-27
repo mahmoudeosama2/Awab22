@@ -3,7 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
+import 'package:quran2/app/services/sharedprefrances.dart';
 import 'package:quran2/app/statemanagment/radioprovider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workmanager/workmanager.dart';
 import '../app/customewidget/bottombar.dart';
 import '../app/customewidget/topbar.dart';
@@ -14,6 +16,7 @@ import '../app/statemanagment/otherProviders.dart';
 import '../app/statemanagment/praiseProvider.dart';
 import '../app/statemanagment/quranProvider.dart';
 
+bool? otherswithch;
 List<Color> colors = [const Color(0xff095263)];
 
 FlutterLocalNotificationsPlugin? flutterLocalNotificationsPlugin;
@@ -34,13 +37,14 @@ Future showNotification() async {
   var platformChannelSpecifics = NotificationDetails(
     android: androidPlatformChannelSpecifics,
   );
-
+  // if (otherswithch == true) {
   await flutterLocalNotificationsPlugin!.show(
     randomIndex,
     'Awab',
     smallDo3a2[randomIndex],
     platformChannelSpecifics,
   );
+  //  }
 }
 
 @pragma('vm:entry-point')
@@ -54,8 +58,9 @@ void callbackDispatcher() {
   flutterLocalNotificationsPlugin!.initialize(
     initializationSettings,
   );
-  Workmanager().executeTask((task, inputData) async{
+  Workmanager().executeTask((task, inputData) async {
     showNotification();
+
     return Future.value(true);
   });
 }
@@ -72,12 +77,18 @@ class _splashscreenState extends State<splashscreen> {
   void initState() {
     Future.delayed(
       const Duration(seconds: 3),
-      () {
+      () async {
         var praisemodel = Provider.of<Praise>(context, listen: false);
         var quranmodel = Provider.of<Quran>(context, listen: false);
         var athan = Provider.of<AthanTime>(context, listen: false);
         var radio = Provider.of<Radioprovider>(context, listen: false);
         var other = Provider.of<Other>(context, listen: false);
+        await setBoolPrefs("notificationSwitch", false);
+
+        await other.getBoolNotificationSwtch();
+        otherswithch = await other.isswitch!;
+        print("${otherswithch}--------------------------------");
+        // = other.isswitch;
         praisemodel.showallpraises();
         quranmodel.ReadJsonCompleteQuran();
         quranmodel.ReadJsonQuranReader();
@@ -85,20 +96,23 @@ class _splashscreenState extends State<splashscreen> {
         athan.lastprayertimes();
         //  radio.play_pause_choose();
         other.maxopenToRate();
+        other.RateFirstUse();
         other.FirstUse();
-
         other.ifcontainsKey("dontRateAgring") == true
             ? other.isshowingrate = true
             : other.isshowingrate = false;
-        Workmanager().initialize(callbackDispatcher);
-        Workmanager().registerPeriodicTask(
-          "1",
-          "",
-          frequency: const Duration(minutes: 15),
-        );
+        if (otherswithch == true) {
+          Workmanager().initialize(callbackDispatcher);
+
+          Workmanager().registerPeriodicTask(
+            "1",
+            "",
+            frequency: const Duration(minutes: 15),
+          );
+        }
       },
     ).then((value) => Navigator.of(context).pushReplacement(
-        CupertinoPageRoute(builder: (ctx) =>  ZoomDrawerBeforeNavigatBar())));
+        CupertinoPageRoute(builder: (ctx) => ZoomDrawerBeforeNavigatBar())));
 
     super.initState();
   }

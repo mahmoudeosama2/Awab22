@@ -72,6 +72,8 @@ dependencies:
   #on_audio_query: ^2.9.0
   launch_review: ^3.0.1
   flutter_zoom_drawer: ^3.1.1
+  animated_custom_dropdown: ^2.0.0
+  app_settings: ^5.1.1
   
 
 

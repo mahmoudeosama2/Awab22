@@ -86,4 +86,47 @@ Future<List<List<String>>> showallpraises() async {
   return allpraises;
 }
 
+addStringPrefs(String key, String value) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  if (prefs.getString(key) == false) {
+    prefs.setString(key, value);
+  } else {
+    print("the $key is already exist-------------------------");
+  }
+}
 
+setBoolPrefs(String key, bool value) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  if (prefs.containsKey(key) == false) {
+    prefs.setBool(key, value);
+  } else {
+    print("the $key is already exist-------------------------");
+  }
+}
+
+getBoolPrefs(String key) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  if (prefs.getBool(key) == true) {
+    print("in function trueeeeeeeeeeeeeeeeeeeeee");
+    return true;
+  } else if (prefs.getBool(key) == false) {
+        print("in function falseeeeeeeeeeeeeeeeeeeeeeeeeee");
+
+    return false;
+  }
+}
+
+changeBoolPrefs(String key, bool value) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.setBool(key, value);
+}
+
+sss() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  print(prefs.getBool("notificationSwitch"));
+  // if (prefs.getBool("notificationSwitch") == true) {
+  //   print("true");
+  // } else if (prefs.getBool("notificationSwitch") == false) {
+  //   print("false");
+  // }
+}

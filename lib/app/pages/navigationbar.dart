@@ -1,10 +1,9 @@
 import 'dart:io';
-
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
-import 'package:in_app_review/in_app_review.dart';
 import 'package:launch_review/launch_review.dart';
+import 'package:quran2/app/pages/drawerHome/Enquiry.dart';
 import 'package:quran2/app/pages/drawerHome/setting.dart';
 import 'package:quran2/app/pages/praise/azkar.dart';
 import 'package:quran2/app/pages/radio/radiofm.dart';
@@ -216,11 +215,18 @@ class MenuScreenPage extends StatelessWidget {
                   leading: Icon(Icons.settings, color: Colors.white, size: 25),
                   title: Text('الاعدادات',
                       style: Theme.of(context).textTheme.displayLarge)),
-              ListTile(
-                  leading: Icon(Icons.question_mark_outlined,
-                      color: Colors.white, size: 25),
-                  title: Text('حول',
-                      style: Theme.of(context).textTheme.displayLarge)),
+              // ListTile(
+              //     onTap: () {
+              //       Navigator.of(context).push(MaterialPageRoute(
+              //         builder: (context) {
+              //           return Enquiry();
+              //         },
+              //       ));
+              //     },
+              //     leading: Icon(Icons.question_mark_outlined,
+              //         color: Colors.white, size: 25),
+              //     title: Text('حول',
+              //         style: Theme.of(context).textTheme.displayLarge)),
               ListTile(
                   onTap: () {
                     exit(0);

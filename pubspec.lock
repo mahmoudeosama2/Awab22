@@ -9,6 +9,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.0-nullsafety.2"
+  animated_custom_dropdown:
+    dependency: "direct main"
+    description:
+      name: animated_custom_dropdown
+      sha256: "5d651fd00c770c32ef7c98978d19b9d8c0a9ebc6e305974af05c1e1a03692289"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.0"
+  app_settings:
+    dependency: "direct main"
+    description:
+      name: app_settings
+      sha256: "09bc7fe0313a507087bec1a3baf555f0576e816a760cbb31813a88890a09d9e5"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.1.1"
   arabic_numbers:
     dependency: "direct main"
     description:

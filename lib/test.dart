@@ -1,329 +1,56 @@
+import 'dart:developer';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
+import 'package:animated_custom_dropdown/custom_dropdown.dart';
+import 'package:quran2/start/splashscreen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import 'app/pages/praise/zekr.dart';
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+const List<String> _list = [
+  'اذكار الصباح',
+  '(اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ لَّهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ مَن ذَا الَّذِي يَشْفَعُ عِندَهُ إِلَّا بِإِذْنِهِ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ وَلَا يُحِيطُونَ بِشَيْءٍ مِّنْ عِلْمِهِ إِلَّا بِمَا شَاءَ وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ وَلَا يَئُودُهُ حِفْظُهُمَا وَهُوَ الْعَلِيُّ الْعَظِيمُ).',
+  '(قُلْ هُوَ اللَّهُ أَحَدٌ - اللَّهُ الصَّمَدُ - لَمْ يَلِدْ وَلَمْ يُولَدْ - وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ) - (ثلاث مرات)',
+  '(قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ - مِن شَرِّ مَا خَلَقَ- وَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ - وَمِن شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ - وَمِن شَرِّ حَاسِد إِذَا حَسَد) - (ثلاث مرات).',
+  '(قُلْ أَعُوذُ بِرَبِّ النَّاسِ - مَلِكِ النَّاسِ - إِلَٰهِ النَّاسِ - مِن شَرِّ الْوَسْوَاسِ الْخَنَّاسِ - الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ - مِنَ الْجِنَّةِ وَالنَّاس) - (ثلاث مرات).',
+  '(أصْبَحْنا وَأَصْبَحَ المُلْكُ لله وَالحَمدُ لله، لا إلهَ إلاّ اللّهُ وَحدَهُ لا شَريكَ لهُ، لهُ المُلكُ ولهُ الحَمْد، وهُوَ على كلّ شَيءٍقدير، رَبِّ أسْأَلُكَ خَيرَ ما في هذا اليوم وَخَيرَ ما بَعْدَه وَأَعوذُ بِكَ مِنْ شَرِّ ما في هذا اليوم وَشَرِّ ما بَعْدَه، رَبِّ أَعوذُ بِكَ مِنَ الْكَسَلِ وَسوءِ الْكِبَر، رَبِّ أَعوذُ بِكَ مِنْ عَذابٍ في النّارِ وَعَذابٍ في القَبْر).',
+  '(اللّهُمَّ بِكَ أَصْبَحْنا، وَبِكَ أَمْسَينا، وَبِكَ نَحْيا، وَبِكَ نَمُوتُ، وَإِلَيْكَ النشورُ).',
+  '(اللَّهُمَّ أنْتَ رَبِّي لا إلَهَ إلَّا أنْتَ، خَلَقْتَنِي وأنا عَبْدُكَ وأنا علَى عَهْدِكَ ووَعْدِكَ ما اسْتَطَعْتُ، أعُوذُ بكَ مِن شَرِّ ما صَنَعْتُ، أبُوءُ لكَ بنِعْمَتِكَ عَلَيَّ وأَبُوءُ لكَ بذَنْبِي فاغْفِرْ لِي، فإنَّه لا يَغْفِرُ الذُّنُوبَ إلَّا أنْتَ).',
+  '(اللَّهمَّ ما أصبحَ بي من نعمةٍ أو بأحدٍ من خلقِكَ فمنكَ وحدَكَ لا شريكَ لكَ فلكَ الحمدُ ولكَ الشُّكرُ)',
+  '(اللَّهُمَّ إنِّي أصبَحتُ أُشهِدُك وأُشهِدُ حَمَلةَ عَرشِكَ ومَلائِكَتَك وجميعَ خَلقِكَ، أنَّكَ أنتَ اللهُ لا إلهَ إلَّا أنتَ وأنَّ مُحمَّدًا عبدُكَ ورسولُكَ)',
+  '(اللَّهمَّ ما أصبحَ بي من نعمةٍ أو بأحدٍ من خلقِكَ فمنكَ وحدَكَ لا شريكَ لكَ فلكَ الحمدُ ولكَ الشُّكرُ)',
+  '(اللَّهمَّ عافِني في بدَني اللَّهمَّ عافِني في سمعي اللَّهمَّ عافِني في بصري لا إلهَ إلَّا أنت، اللَّهمَّ إنِّي أعوذُ بِكَ منَ الكُفْرِ والفقرِ اللَّهمَّ إنِّي أعوذُ بكَ من عذابِ القبرِ لا إلهَ إلَّا أنت)، (ثلاث مرات).',
+];
 
-  // This widget is the root of your application.
+class Test extends StatefulWidget {
+  const Test({super.key});
+
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Corona Out',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        primaryColor: Theme.of(context).primaryColor,
-      ),
-      home: const Zoom(),
-    );
-  }
+  State<Test> createState() => _TestState();
 }
 
-final ZoomDrawerController z = ZoomDrawerController();
-
-class Zoom extends StatefulWidget {
-  const Zoom({Key? key}) : super(key: key);
-
-  @override
-  _ZoomState createState() => _ZoomState();
-}
-
-class _ZoomState extends State<Zoom> {
-  @override
-  Widget build(BuildContext context) {
-   
-    return ZoomDrawer(
-      controller: z,
-      borderRadius: 24,
-      // showShadow: true,
-      openCurve: Curves.fastOutSlowIn,
-      slideWidth: MediaQuery.of(context).size.width * 0.65,
-      duration: const Duration(milliseconds: 500),
-      // angle: 0.0,
-      menuBackgroundColor: Colors.blue,
-      mainScreen: const Body(),
-      moveMenuScreen: false,
-      menuScreen: Scaffold(
-        backgroundColor: Colors.white,
-        body: Center(
-          child: InkWell(
-            onTap: () {
-              final navigator = Navigator.of(
-                context,
-              );
-              z.close?.call()?.then(
-                    (value) => navigator.push(
-                      MaterialPageRoute(
-                        builder: (_) => TestPage(),
-                      ),
-                    ),
-                  );
-            },
-            child: Text(
-              "Push Page",
-              style: TextStyle(fontSize: 24.0, color: Colors.black),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class Body extends StatefulWidget {
-  const Body({Key? key}) : super(key: key);
-
-  @override
-  State<Body> createState() => _BodyState();
-}
-
-class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
-  late AnimationController controller = AnimationController(
-    vsync: this,
-    duration: const Duration(milliseconds: 100),
-    value: -1.0,
-  );
-
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
-
-  bool get isPanelVisible {
-    final AnimationStatus status = controller.status;
-    return status == AnimationStatus.completed ||
-        status == AnimationStatus.forward;
-  }
+class _TestState extends State<Test> {
+  final jobRoleCtrl = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    ss();
+    log("mahmoud");
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: IconButton(
-          onPressed: () {
-            controller.fling(velocity: isPanelVisible ? -1.0 : 1.0);
-          },
-          icon: AnimatedIcon(
-            icon: AnimatedIcons.close_menu,
-            progress: controller.view,
-          ),
-        ),
-      ),
-      body: TwoPanels(
-        controller: controller,
-      ),
-    );
+        appBar: AppBar(),
+        body: CustomDropdown<String>(
+          hintText: 'Select job role',
+          items: _list,
+          initialItem: _list[0],
+          onChanged: (value) {},
+        ));
   }
 }
 
-class TwoPanels extends StatefulWidget {
-  final AnimationController controller;
-
-  const TwoPanels({Key? key, required this.controller}) : super(key: key);
-
-  @override
-  _TwoPanelsState createState() => _TwoPanelsState();
-}
-
-class _TwoPanelsState extends State<TwoPanels> with TickerProviderStateMixin {
-  static const _headerHeight = 32.0;
-  late TabController tabController = TabController(length: 3, vsync: this);
-  late final AnimationController _controller = AnimationController(
-    duration: const Duration(seconds: 2),
-    vsync: this,
-  )..addListener(() {
-      print("SlideValue: ${_controller.value} - ${_controller.status}");
-    });
-  late final Animation<Offset> _offsetAnimation = Tween<Offset>(
-    begin: Offset.zero,
-    end: const Offset(1.5, 0.0),
-  ).animate(CurvedAnimation(
-    parent: _controller,
-    curve: Curves.elasticIn,
-  ));
-
-  Animation<RelativeRect> getPanelAnimation(BoxConstraints constraints) {
-    final _height = constraints.biggest.height;
-    final _backPanelHeight = _height - _headerHeight;
-    const _frontPanelHeight = -_headerHeight;
-
-    return RelativeRectTween(
-      begin: RelativeRect.fromLTRB(
-        0.0,
-        _backPanelHeight,
-        0.0,
-        _frontPanelHeight,
-      ),
-      end: const RelativeRect.fromLTRB(0.0, 100, 0.0, 0.0),
-    ).animate(
-      CurvedAnimation(parent: widget.controller, curve: Curves.linear),
-    );
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    tabController.dispose();
-    super.dispose();
-  }
-
-  Widget bothPanels(BuildContext context, BoxConstraints constraints) {
-    final ThemeData theme = Theme.of(context);
-    return Stack(
-      children: <Widget>[
-        Scaffold(
-          appBar: AppBar(
-            title: const Text("Backdrop"),
-            elevation: 0.0,
-            leading: IconButton(
-              icon: const Icon(Icons.menu),
-              onPressed: () {
-                z.toggle!();
-              },
-            ),
-            bottom: TabBar(
-              controller: tabController,
-              tabs: const [
-                Tab(
-                  //icon: Icon(Icons.home_filled),
-                  text: 'lll',
-                ),
-                Tab(
-                  icon: Icon(Icons.home_filled),
-                  //text: 'lll',
-                ),
-                Tab(
-                  icon: Icon(Icons.home_filled),
-                  text: 'lll',
-                )
-              ],
-            ),
-          ),
-          body: TabBarView(
-            controller: tabController,
-            children: [
-              Container(
-                color: theme.primaryColor,
-                child: const Center(
-                  child: Text(
-                    "Back Panel",
-                    style: TextStyle(fontSize: 24.0, color: Colors.white),
-                  ),
-                ),
-              ),
-              Container(
-                color: Colors.pink,
-                child: Center(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        "Back Panel",
-                        style: TextStyle(fontSize: 24.0, color: Colors.white),
-                      ),
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          if (_controller.status == AnimationStatus.completed) {
-                            _controller.reverse();
-                          } else {
-                            _controller.forward();
-                          }
-
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => TestPage(),
-                            ),
-                          );
-                        },
-                        child: Text("Push"),
-                      ),
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      SlideTransition(
-                        position: _offsetAnimation,
-                        child: const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: FlutterLogo(size: 150.0),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Container(
-                color: Colors.brown,
-                child: const Center(
-                  child: Text(
-                    "Back Panel",
-                    style: TextStyle(fontSize: 24.0, color: Colors.white),
-                  ),
-                ),
-              )
-            ],
-          ),
-        ),
-        PositionedTransition(
-          rect: getPanelAnimation(constraints),
-          child: Material(
-            elevation: 12.0,
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(16.0),
-              topRight: Radius.circular(16.0),
-            ),
-            child: Column(
-              children: <Widget>[
-                SizedBox(
-                  height: _headerHeight,
-                  child: Center(
-                    child: Text(
-                      "Shop Here",
-                      style: Theme.of(context).textTheme.labelLarge,
-                    ),
-                  ),
-                ),
-                const Expanded(
-                  child: Center(
-                    child: Text(
-                      "Front Panel",
-                      style: TextStyle(fontSize: 24.0, color: Colors.black),
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ),
-        )
-      ],
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: bothPanels,
-    );
-  }
-}
-
-class TestPage extends StatelessWidget {
-  const TestPage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: Center(
-        child: Text("Test Page !"),
-      ),
-    );
-  }
+ss() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.getBool("notificationSwitch") == true
+      ? showNotification()
+      : print("sheet");
 }

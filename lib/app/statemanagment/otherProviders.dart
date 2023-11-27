@@ -6,8 +6,19 @@ class Other with ChangeNotifier {
   bool? isshowingrate;
   int? maxOpenToRate;
   bool? isFmOn;
-
+  bool? isswitch;
+  bool? firstuse;
   FirstUse() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.containsKey("firstuse") == false) {
+      firstuse = true;
+      prefs.setBool("firstuse", true);
+    } else {
+      firstuse = false;
+    }
+  }
+
+  RateFirstUse() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.containsKey("rateapp")) {
       countopen = prefs.getInt("rateapp");
@@ -54,6 +65,22 @@ class Other with ChangeNotifier {
     } else {
       prefs.setBool("BtnFm", true);
       isFmOn = true;
+    }
+  }
+
+  getBoolNotificationSwtch() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.getBool("notificationSwitch") == true) {
+      isswitch = true;
+      print("$isswitch  --in is switch//////////////////");
+
+      return true;
+    } else if (prefs.getBool("notificationSwitch") == false) {
+      isswitch = false;
+      print("$isswitch  --in is switch//////////////////");
+
+      return false;
+
     }
   }
 }

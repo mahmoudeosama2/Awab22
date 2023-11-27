@@ -4,6 +4,7 @@ import 'package:flutter/services.dart ';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:provider/provider.dart';
 import 'package:quran2/app/statemanagment/otherProviders.dart';
+import 'package:quran2/test.dart';
 import 'app/pages/quran/home_page.dart';
 import 'app/pages/navigationbar.dart';
 import 'app/statemanagment/radioprovider.dart';
@@ -58,6 +59,7 @@ class _StartAppState extends State<StartApp> {
             'splashscreen': ((context) => const splashscreen()),
             'NavigatorBar': ((context) => const NavigatorBar()),
             'HomePage': ((context) => const HomePage()),
+            'test': ((context) => const Test()),
           },
           theme: ThemeData(
             primaryColor: const Color(0xff095263),
@@ -67,7 +69,6 @@ class _StartAppState extends State<StartApp> {
                       const Color(0xff095263))),
             ),
             textTheme: const TextTheme(
-              
               displayLarge: TextStyle(
                 fontSize: 16,
                 color: Colors.white,
@@ -88,6 +89,12 @@ class _StartAppState extends State<StartApp> {
                 color: Colors.white,
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
+                fontFamily: "Cairo",
+              ),
+              titleMedium: TextStyle(
+                color: const Color(0xff095263),
+                fontSize: 20,
+                fontWeight: FontWeight.w700,
                 fontFamily: "Cairo",
               ),
             ),

@@ -29,7 +29,7 @@ class _PraiseState extends State<AzkarHome> {
     var model = Provider.of<Praise>(context);
     return Scaffold(
         floatingActionButton: Padding(
-          padding: EdgeInsets.only(bottom: 50),
+          padding: EdgeInsets.only(bottom: 80),
           child: FloatingActionButton(
             onPressed: () {
               showModalBottomSheet(

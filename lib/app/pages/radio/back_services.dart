@@ -18,6 +18,7 @@ Future<void> initializeService() async{
           onStart: onStart,
           isForegroundMode: true));
 }
+
 @pragma('vm:entry-point')
 void onStart(ServiceInstance service) async{
   DartPluginRegistrant.ensureInitialized();

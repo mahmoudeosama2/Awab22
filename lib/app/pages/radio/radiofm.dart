@@ -49,7 +49,7 @@ class _ViewSurahtate extends State<RadioFm> with TickerProviderStateMixin {
                 body: Container(
                     padding: const EdgeInsets.only(
                       top: 100,
-                      bottom: 30,
+                      bottom: 100,
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
